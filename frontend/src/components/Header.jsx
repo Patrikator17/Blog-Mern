@@ -13,8 +13,8 @@ const Header = () => {
         <Link to='/' className='self-center whitespace-nowrap text-sm 
             sm:text-xl font-semibold dark:text-white'>
             <span className='px-2 py-1  bg-gradient-to-r from-blue-400 to-purple-600
-             hover:from-pink-500 hover:to-yellow-500 text-white rounded-xl'>Pratik's </span>
-            Blog
+             hover:from-pink-500 hover:to-yellow-500 text-white rounded-xl'>Pratik's</span>
+           &nbsp; Blog
         </Link>
 
         <form>
