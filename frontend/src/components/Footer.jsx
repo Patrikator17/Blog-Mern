@@ -5,7 +5,7 @@ import { BsFacebook, BsGithub, BsInstagram, BsLinkedin, BsTwitter} from 'react-i
 
 const FooterComponent = () => {
   return (
-    <Footer container className='border border-t-4 border-r-indigo-300  border-blue-900'>
+    <Footer className='border border-t-4 border-r-indigo-300  border-blue-900'>
         <div className='w-full max-w-7xl mx-auto'>
             <div className='grid w-full justify-between sm:flex md: grid-cols-1'>
                 <div className='mt-5'>
@@ -91,7 +91,7 @@ const FooterComponent = () => {
               <Footer.Copyright href='#' by='Pratik Patkar' year={new Date().getUTCFullYear()}/>
             
 
-              <div className='flex gap-6 sm:mt-0 mt-4 sm:justify-center'>
+              <div className='flex gap-6 sm:mt-0 mt-4 mb-4 sm:justify-center'>
                 <Footer.Icon href='#' icon={BsFacebook}/>
                 <Footer.Icon href='#' icon={BsInstagram}/>
                 <Footer.Icon href='#' icon={BsTwitter}/>

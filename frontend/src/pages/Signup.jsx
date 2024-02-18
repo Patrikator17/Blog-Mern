@@ -34,6 +34,7 @@ const Signup = () => {
       const data = await res.json();
 
       if(data.success === false){
+        setLoading(false)
         return setErrorMessage('Email Already Exists..')
       }
       setLoading(false)
