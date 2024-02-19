@@ -34,4 +34,4 @@ export const {
     signInStart
 } = userSlice.actions;
 
-export default userSlice.reducer
+export default userSlice.reducer //userReducer import in store.js
