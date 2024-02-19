@@ -1,14 +1,19 @@
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { signInFailure, signInStart, signInSuccess } from '../redux/user/userSlice'//from userSlice
+
 
 
 const Signup = () => {
 
   const [formData, setFormData] = useState({})
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [loading, setLoading] = useState(false)
+  // const [errorMessage, setErrorMessage] = useState(null)
+  // const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const {loading, error: errorMessage} = useSelector(state => state.user) // user: name of reducer
 
   const handleChange = (e) => {
     setFormData({...formData, [e.target.id]: e.target.value}) //{username: 'are', email: 'dsa', password: 'fsd'}
@@ -19,12 +24,14 @@ const Signup = () => {
     e.preventDefault();
 
     if(!formData.username || !formData.password || !formData.email){
-      return setErrorMessage('Please fill in all the credentials..')
+      return dispatch(signInFailure('Please fill in all the credentials..'))
+      // return setErrorMessage('Please fill in all the credentials..')
     }
 
     try{
-      setLoading(true)
-      setErrorMessage(null)
+      // setLoading(true)
+      // setErrorMessage(null)
+      dispatch(signInStart())
 
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
@@ -34,17 +41,20 @@ const Signup = () => {
       const data = await res.json();
 
       if(data.success === false){
-        setLoading(false)
-        return setErrorMessage('Email Already Exists..')
+        // setLoading(false)
+        // return setErrorMessage('Email Already Exists..')
+        dispatch(signInFailure('Email Already Exists.. Please Login to continue!!'))
       }
-      setLoading(false)
+      // setLoading(false)
 
       if(res.ok){
+        dispatch(signInSuccess(data))
         navigate('/login')
       }
     }catch(error){
-      setErrorMessage(error.message)
-      setLoading(false)
+      // setErrorMessage(error.message)
+      // setLoading(false)
+      dispatch(signInFailure(data.message))
     }
   }
 

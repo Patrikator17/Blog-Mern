@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
 import { FaGoogle } from 'react-icons/fa'; // Importing Google icon from react-icons
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInFailure, signInSuccess, signInStart } from '../redux/user/userSlice';
 
 const Login = () => {
 
   const [formData, setFormData] = useState({})
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [loading, setLoading] = useState(false)
+  // const [errorMessage, setErrorMessage] = useState(null)
+  // const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const {loading, error: errorMessage} = useSelector(state => state.user)
 
 
   const handleChange = (e) => {
@@ -19,12 +23,14 @@ const Login = () => {
     e.preventDefault();
 
     if(!formData.password || !formData.email){
-      return setErrorMessage('Please fill in all the credentials..')
+      // return setErrorMessage('Please fill in all the credentials..')
+      return dispatch(signInFailure('Please fill in all the credentials..'))
     }
 
     try{
-      setLoading(true)
-      setErrorMessage(null)
+      // setLoading(true)
+      // setErrorMessage(null)
+      dispatch(signInStart())
 
       const res = await fetch('/api/auth/login', {
         method: 'POST',
@@ -34,17 +40,20 @@ const Login = () => {
       const data = await res.json();
 
       if(data.success === false){
-        setLoading(false)
-        return setErrorMessage('Invalid Credentials...')
+        // setLoading(false)
+        // return setErrorMessage('Invalid Credentials...')
+        dispatch(signInFailure('Invaldi Credentials'))
       }
-      setLoading(false)
+      // setLoading(false)
 
       if(res.ok){
+        dispatch(signInSuccess(data))
         navigate('/')
       }
     }catch(error){
-      setErrorMessage(error.message)
-      setLoading(false)
+      // setErrorMessage(error.message)
+      // setLoading(false)
+      dispatch(signInFailure(data.message))
     }
   }
   
