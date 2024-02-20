@@ -4,6 +4,7 @@ import { FaGoogle } from 'react-icons/fa'; // Importing Google icon from react-i
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInFailure, signInSuccess, signInStart } from '../redux/user/userSlice';
+import OAuth from '../components/OAuth';
 
 const Login = () => {
 
@@ -119,18 +120,17 @@ const Login = () => {
           </div>
         </form>
 
+        
+        <div className="mt-4 text-center">
+          <span className="text-gray-600">or</span>
+        </div>
+        <OAuth />
         <div className='flex gap-2 text-sm mt-4'>
           <span>Don't Have an account? </span>
           <Link to='/signup' className='text-blue-600'>
             Signup
           </Link>
         </div>
-        <div className="mt-4 text-center">
-          <span className="text-gray-600">or</span>
-        </div>
-        <Button  outline gradientDuoTone="purpleToPink" className="w-full mt-4 flex items-center justify-center" >
-          <FaGoogle className="mr-2" /> Sign up with Google
-        </Button>
       </div>
 
       {

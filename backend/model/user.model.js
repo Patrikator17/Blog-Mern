@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         reqired: true,
     },
+    profilePicture:{
+        type:  String,
+        default: 'https://w7.pngwing.com/pngs/304/275/png-transparent-user-profile-computer-icons-profile-miscellaneous-logo-monochrome-thumbnail.png'
+    },
 
 }, {timestamps: true}
 )
