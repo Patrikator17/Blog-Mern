@@ -14,6 +14,7 @@ const DashProfile = () => {
   const [imageFileUploadingProgress, setImageFileUploadingProgress] = useState(null)
   const [imageFileUploadError, setImageFileUploadError] = useState(null)
   const [invalidFileTypeAlert, setInvalidFileTypeAlert] = useState(false); // State for alert visibility
+  const [formData, setFormData] = useState({});
 
   console.log(imageFileUploadingProgress, imageFileUploadError);
 
@@ -63,10 +64,16 @@ const DashProfile = () => {
         getDownloadURL(uploadTask.snapshot.ref)
         .then((downloadURL) => {
           setImageFileUrl(downloadURL)
+          setFormData({...formData, profilePicture: downloadURL})
         })
-      }
+      },
 
     )
+  }
+
+  const handleChange = (e) => {
+    setFormData({...formData, [e.target.id] : e.target.value});
+    console.log(formData);
   }
 
 
@@ -105,21 +112,24 @@ const DashProfile = () => {
         
 
         <TextInput 
-        type='text' 
-        id='username'
-        placeholder='Username'
-        defaultValue={currentUser.username}
+          type='text' 
+          id='username'
+          placeholder='Username'
+          defaultValue={currentUser.username}
+          onChange={handleChange}
         />
         <TextInput 
-        type='text' 
-        id='email'
-        placeholder='Email'
-        defaultValue={currentUser.email}
+          type='text' 
+          id='email'
+          placeholder='Email'
+          defaultValue={currentUser.email}
+          onChange={handleChange}
         />
         <TextInput 
-        type='password' 
-        id='password'
-        placeholder='Password'
+          type='password' 
+          id='password'
+          placeholder='Password'
+          onChange={handleChange}
         
         />
 
