@@ -3,6 +3,9 @@ import React, { useState, useRef, useEffect } from 'react'
 import {useSelector} from 'react-redux'
 import {getStorage, getDownloadURL, uploadBytesResumable, ref } from 'firebase/storage'
 import { app } from '../firebase'
+import { useDispatch } from 'react-redux'
+import { updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice'
+
 
 
 const DashProfile = () => {
@@ -15,6 +18,8 @@ const DashProfile = () => {
   const [imageFileUploadError, setImageFileUploadError] = useState(null)
   const [invalidFileTypeAlert, setInvalidFileTypeAlert] = useState(false); // State for alert visibility
   const [formData, setFormData] = useState({});
+  const dispatch = useDispatch()
+  const [updateUserSuccess, setUpdateUserSuccess] = useState(null)
 
   console.log(imageFileUploadingProgress, imageFileUploadError);
 
@@ -48,6 +53,8 @@ const DashProfile = () => {
     const fileName = new Date().getTime() + imageFile.name
     const storageRef = ref(storage, fileName)
     const uploadTask = uploadBytesResumable(storageRef, imageFile)
+
+
     uploadTask.on(
       'state_changed',
       (snapshot) => {
@@ -73,7 +80,35 @@ const DashProfile = () => {
 
   const handleChange = (e) => {
     setFormData({...formData, [e.target.id] : e.target.value});
-    console.log(formData);
+    // console.log(formData);
+  }
+
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    if(Object.keys(formData).length === 0){
+      return
+    }
+    try{
+      dispatch(updateStart())
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type' : 'application/json',
+
+        },
+        body: JSON.stringify(formData)
+      }
+      )
+      const data = await res.json()
+      if(!res.ok){
+        dispatch(updateFailure(data.message));
+      }
+      dispatch(updateSuccess(data))
+      setUpdateUserSuccess('User Profile Updated Successfully...')
+    }catch(error){
+      dispatch(updateFailure(error.message))
+    }
+
   }
 
 
@@ -82,7 +117,7 @@ const DashProfile = () => {
 
       <h1 className='my-7 text-center font-semibold text-3xl'>Profile</h1>
 
-      <form className='flex flex-col gap-4'>
+      <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
 
         <input 
         type="file" 
@@ -142,6 +177,12 @@ const DashProfile = () => {
         <span>Delete Account</span>
         <span>Signout</span>
       </div>
+
+      {updateUserSuccess && (
+        <Alert color='success' className='mt-4'>
+          {updateUserSuccess}
+        </Alert>
+      )}
 
     </div>
   )
