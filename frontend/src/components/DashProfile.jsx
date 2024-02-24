@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux'
 import {getStorage, getDownloadURL, uploadBytesResumable, ref } from 'firebase/storage'
 import { app } from '../firebase'
 import { useDispatch } from 'react-redux'
-import { deleteFailure, deleteStart, deleteSuccess, updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice'
+import { deleteFailure, deleteStart, deleteSuccess, signoutSuccess, updateFailure, updateStart, updateSuccess } from '../redux/user/userSlice'
 import {HiOutlineExclamationCircle} from 'react-icons/hi'
 
 
@@ -131,6 +131,23 @@ const DashProfile = () => {
     }
   }
 
+  const handleSignout = async() => {
+    try{
+      const res = await fetch('api/user/signout', {
+        method: 'POST',
+      });
+      const data = await res.json()
+      if(!res.ok){
+        console.log(data.message);
+      }else{
+        dispatch(signoutSuccess())
+      }
+      
+    }catch(error){
+      console.log(error.message);
+    }
+  }
+
 
   return (
     <div className='max-w-lg mx-auto w-full'>
@@ -195,7 +212,7 @@ const DashProfile = () => {
 
       <div className='text-red-500 flex justify-between mt-5'>
         <span onClick={() => setShowModal(true)} className='cursor-pointer'>Delete Account</span>
-        <span>Signout</span>
+        <span onClick={handleSignout} className='cursor-pointer'>Signout</span> 
       </div>
 
       {updateUserSuccess && (
