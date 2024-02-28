@@ -7,6 +7,7 @@ const DashPost = () => {
 
   const{currentUser} = useSelector((state) => state.user)
   const [userPosts, setUserPosts] = useState({ posts: [] })
+  const [showMore, setShowMore] = useState(true)
   
   
   
@@ -18,6 +19,9 @@ const DashPost = () => {
         const data = await res.json()
         if(res.ok){
           setUserPosts(data)
+          if(data.posts.length < 9){
+            setShowMore(false)
+          }
           
         }
       }catch(error){
@@ -30,6 +34,22 @@ const DashPost = () => {
       
     }
   }, [currentUser._id])
+
+  const handleShowMore = async() => {
+    const startIndex = userPosts.posts.length
+    try{
+      const res = await fetch(`/api/post/get-post?userId=${currentUser._id}&startIndex=${startIndex}`);
+      const data = await res.json();
+      if(res.ok){
+        setUserPosts((prev) => ({ posts: [...prev.posts, ...data.posts] }));
+        if(data.posts.length < 9){
+          setShowMore(false)
+        }
+      }
+    }catch(error){
+      console.log(error);
+    }
+  } 
   
 
   // console.log(userPosts.posts)
@@ -50,8 +70,8 @@ const DashPost = () => {
               <Table.HeadCell>Delete</Table.HeadCell>
             </Table.Head>
             {
-              userPosts.posts.map((post) => (
-                <Table.Body className='divide-y' key={post._id}>
+              userPosts.posts.map((post, index) => (
+                <Table.Body className='divide-y' key={`${post._id}-${index}`}>
                   <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
                     <Table.Cell>
                       {new Date(post.updatedAt).toLocaleDateString()}
@@ -86,6 +106,17 @@ const DashPost = () => {
               ))
             }
           </Table>
+
+          {
+            showMore && (
+              <button 
+              className='w-full text-teal-500 self-center text-sm py-7'
+              onClick={handleShowMore}
+              >
+                Show more
+              </button>
+            )
+          }
         </>
       ) : (
         <p>You have no posts yet</p>
