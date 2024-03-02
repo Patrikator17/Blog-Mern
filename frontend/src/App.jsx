@@ -11,6 +11,7 @@ import PrivateRoute from './components/PrivateRoute'
 import AdminPrivateRoute from './components/AdminPrivateRoute'
 import CreatePost from './pages/CreatePost'
 import UpdatePost from './pages/UpdatePost'
+import PostPage from './pages/PostPage'
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         <Route path='/project' element={<Project />} />
+        <Route path='/post/:slug' element={<PostPage />} />
       </Routes>
     <Footer />
     </BrowserRouter>
