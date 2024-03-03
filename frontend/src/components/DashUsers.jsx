@@ -120,7 +120,10 @@ const DashUsers = () => {
           </div>
         </Modal.Body>
       </Modal> 
+
+      
     </div>
+    
   )
 }
 

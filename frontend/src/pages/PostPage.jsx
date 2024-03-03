@@ -1,6 +1,7 @@
 import { Button, Spinner } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import Comments from '../components/Comments'
 
 const PostPage = () => {
     const {slug} = useParams()
@@ -34,6 +35,10 @@ const PostPage = () => {
         fetchPost()
     },[slug])
 
+    useEffect(() => {
+        console.log("post._id:", post && post._id);
+    }, [post]);
+
     if(loading) return(
         <div className='flex justify-center items-center min-h-screen'>
             <Spinner size='xl' />
@@ -53,8 +58,7 @@ const PostPage = () => {
         </Button>
     </Link>
 
-    <img src={post && post.image} alt={post && post.title} className='mt-10 p-3 max-h-[600px]
-     w-full object-cover' />
+    <img src={post && post.image} alt={post && post.title} className='mt-10 p-3 max-h-[600px] w-full object-cover' />
 
     <div className='flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl
     text-sm'>
@@ -65,6 +69,10 @@ const PostPage = () => {
     <div className='p-3 max-w-2xl mx-auto w-full post-content'
     dangerouslySetInnerHTML={{__html: post && post.content}}>
 
+    </div>
+
+    <div>
+        {post && <Comments postId={post._id} />}
     </div>
 
   </main>

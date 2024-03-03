@@ -21,7 +21,8 @@ const Header = () => {
           });
           const data = await res.json()
           if(!res.ok){
-            console.log(data.message);
+            // console.log(data.message);
+            throw new Error(`Signout failed with status ${res.status}`);
           }else{
             dispatch(signoutSuccess())
           }
