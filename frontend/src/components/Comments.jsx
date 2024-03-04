@@ -75,6 +75,17 @@ const Comments = ({ postId }) => {
         }
     };
 
+    const handleEdit = async (comment, editedContent) => {
+        try{
+            setDisplayComments(
+                displayComments.map((c) => (c._id === comment._id ? {...c, textContent: editedContent} : c))
+            )
+        }
+        catch(error){
+
+        }
+    }
+
 
   return (
     <div className='max-w-2xl mx-auto w-full p-3'>
@@ -136,7 +147,9 @@ const Comments = ({ postId }) => {
                     displayComments.map(comment => (
                         <AllComments key={comment._id}
                         comment={comment}
-                        onLike={handleLike}/>
+                        onLike={handleLike}
+                        onEdit = {handleEdit}/>
+                        
                     ))
                 }
                 </>
