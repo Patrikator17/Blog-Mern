@@ -56,7 +56,7 @@ const AllComments = ({comment, onLike, onEdit, onDelete}) => {
 
 
   return (
-    <div className='flex p-4 border-b dark:border-gray-600 text-sm'>
+    <div className='flex p-4 border-b border-gray-300 dark:border-gray-600 text-sm'>
         <div className='flex-shrink-0 mr-3'>
             <img className='w-8 h-8 rounded-full ' src={user.profilePicture} alt={user.username} />
         </div>
@@ -87,7 +87,7 @@ const AllComments = ({comment, onLike, onEdit, onDelete}) => {
             ) : (
                 <>
                 
-            <p className='text-gray-500 mb-2'>{comment.textContent}</p>
+            <p className='text-gray-400 mb-2'>{comment.textContent}</p>
 
             <div className='flex items-center pt-2 text-sm border-t dark:border-gray-700 max-w-fit gap-2'>
                 <button 
