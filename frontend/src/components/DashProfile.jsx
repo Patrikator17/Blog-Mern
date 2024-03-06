@@ -51,7 +51,7 @@ const DashProfile = () => {
   },[imageFile])
 
   const uploadImage = async() =>{
-    // console.log('Uploading img');
+    console.log('Uploading img');
     const storage = getStorage(app) // from firebas.js
     const fileName = new Date().getTime() + imageFile.name
     const storageRef = ref(storage, fileName)
@@ -79,6 +79,7 @@ const DashProfile = () => {
       },
 
     )
+    console.log('Uploading img end');
   }
 
   const handleChange = (e) => {
@@ -93,6 +94,13 @@ const DashProfile = () => {
     }
     try{
       dispatch(updateStart())
+
+      if (imageFile) {
+        // Wait for the image upload to complete before updating the user profile
+        await uploadImage();
+      }
+
+
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: 'PUT',
         headers: {
@@ -206,8 +214,13 @@ const DashProfile = () => {
         
         />
 
-        <Button type='submit' gradientDuoTone='purpleToBlue' outline disabled={loading || imageFileUploadingProgress}>
-          {loading ? 'Loading...' : 'Update' }
+        <Button
+          type='submit'
+          gradientDuoTone='purpleToBlue'
+          outline
+          disabled={loading || (imageFileUploadingProgress !== null && imageFileUploadingProgress !== "100")}
+        >
+          {loading ? 'Loading...' : 'Update'}
         </Button>
 
         {

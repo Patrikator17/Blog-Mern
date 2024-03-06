@@ -59,7 +59,12 @@ const userSlice = createSlice({
             state.currentUser = null;
             state.error = null;
             state.loading = false;
-        }
+        },
+        resetUserState: (state) => {
+            state.currentUser = null;
+            state.error = null;
+            state.loading = false;
+        },
         
     }
 })
@@ -75,6 +80,7 @@ export const {
     deleteSuccess,
     deleteFailure,
     signoutSuccess,
+    resetUserState,
 } = userSlice.actions;
 
 export default userSlice.reducer //userReducer import in store.js

@@ -2,7 +2,7 @@ import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { signInFailure, signInStart, signInSuccess } from '../redux/user/userSlice'//from userSlice
+import { resetUserState, signInFailure, signInStart, signInSuccess } from '../redux/user/userSlice'//from userSlice
 import OAuth from '../components/OAuth'
 
 
@@ -51,6 +51,8 @@ const Signup = () => {
       if(res.ok){
         dispatch(signInSuccess(data))
         navigate('/login')
+
+        dispatch(resetUserState());
       }
     }catch(error){
       // setErrorMessage(error.message)

@@ -12,6 +12,7 @@ import AdminPrivateRoute from './components/AdminPrivateRoute'
 import CreatePost from './pages/CreatePost'
 import UpdatePost from './pages/UpdatePost'
 import PostPage from './pages/PostPage'
+import Search from './pages/Search'
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         </Route>
         <Route path='/about' element={<About />} />
         <Route path='/signup' element={<Signup />} />
+        <Route path='/search' element={<Search />} />
         <Route path='/login' element={<Login />} />
         <Route path='/project' element={<Project />} />
         <Route path='/post/:slug' element={<PostPage />} />

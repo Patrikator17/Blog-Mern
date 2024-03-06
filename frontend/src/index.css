@@ -30,3 +30,6 @@ body{
     color: rgb(73, 149, 199);
     text-decoration: none;
 }
+.group:hover .category {
+    visibility: hidden;
+  }

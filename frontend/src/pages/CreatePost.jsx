@@ -144,11 +144,11 @@ const CreatePost = () => {
                 )}
 
             <ReactQuill 
-            theme='snow' 
-            placeholder='Start typing...' 
-            className='h-72 mb-12' 
-            required
-            onChange={(value) => setFormData({...formData, content: value})}
+                theme='snow' 
+                placeholder='Start typing...' 
+                className='h-72 mb-12' 
+                required
+                onChange={(value) => setFormData({...formData, content: value})}
             />
 
             <Button 
