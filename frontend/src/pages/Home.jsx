@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import PostCard from '../components/PostCard';
 import { Link } from 'react-router-dom';
 
+import reactLogo from '../assets/Logo/react_logo.png'
+import jsLogo from '../assets/Logo/js_logo.png'
+import pythonLogo from '../assets/Logo/python_logo.png'; 
+
 const Home = () => {
   const [posts, setPosts] = useState([]);
 
@@ -32,6 +36,20 @@ const Home = () => {
         View all posts
       </Link>
     </div>
+
+    <div className='flex item-center justify-center gap-4 mb-18'>
+
+      {/* React Logo */}
+      <img src={reactLogo} alt='React Logo' className='w-20 h-20 rounded-full border border-blue-500 p-2 transition-transform transform hover:scale-110' />
+
+      {/* JavaScript Logo */}
+      <img src={jsLogo} alt='JavaScript Logo' className='w-20 h-20 rounded-full border border-yellow-500 p-2 transition-transform transform hover:scale-110' />
+
+      {/* Python Logo */}
+      <img src={pythonLogo} alt='Python Logo' className='w-20 h-20 rounded-full border border-green-500 p-2 transition-transform transform hover:scale-110' />
+
+    </div>
+
 
     <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 py-7'>
       {posts && posts.length > 0 && (
