@@ -121,7 +121,7 @@ const DashPost = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <span 
-                      className='font-medium text-red-500 hover:underline'
+                      className='font-medium text-red-500 hover:underline cursor-pointer'
                       onClick={() => {
                         setShowModal(true)
                         setpostIdToDelete(post._id)

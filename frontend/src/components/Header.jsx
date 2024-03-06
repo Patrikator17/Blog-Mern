@@ -20,8 +20,9 @@ const Header = () => {
 
 
     const handleSignout = async() => {
+        console.log('Attempting signout...')
         try{
-          const res = await fetch('api/user/signout', {
+          const res = await fetch(`/api/user/signout`, {
             method: 'POST',
           });
           const data = await res.json()
@@ -33,7 +34,7 @@ const Header = () => {
           }
           
         }catch(error){
-          console.log(error.message);
+          console.log('Signout error message : ',error.message);
         }
       }
 
@@ -57,11 +58,21 @@ const Header = () => {
 
   return (
     <Navbar className='border-b-2 border-gray-300' >
-        <Link to='/' className='self-center whitespace-nowrap text-sm 
+        {/* <Link to='/' className='self-center whitespace-nowrap text-sm 
             sm:text-xl font-semibold dark:text-white'>
             <span className='px-2 py-1  bg-gradient-to-r from-blue-400 to-purple-600
              hover:from-pink-500 hover:to-yellow-500 text-white rounded-xl'>Pratik's</span>
            &nbsp; Blog
+        </Link> */}
+
+        <Link to='/' className='flex items-center'>
+        <span className='text-2xl sm:text-3xl font-bold dark:text-white'>
+            Pratik's
+        </span>
+        <span className='px-2 py-1 ml-2 bg-gradient-to-r from-blue-400 to-purple-600
+            hover:from-pink-500 hover:to-purple-500 text-white rounded-full'>
+            Blog
+        </span>
         </Link>
 
         <form onSubmit={handleSubmit}> 

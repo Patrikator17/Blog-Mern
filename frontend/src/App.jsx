@@ -13,32 +13,36 @@ import CreatePost from './pages/CreatePost'
 import UpdatePost from './pages/UpdatePost'
 import PostPage from './pages/PostPage'
 import Search from './pages/Search'
+import ScrollToTop from './ScrollToTop'
 
 
 function App() {
   
   return (
     <BrowserRouter>
-    <Header />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route element={<PrivateRoute />}>
-          <Route path='/dashboard' element={<Dashboard />} />
-        </Route>
-        <Route element={<AdminPrivateRoute />}>
-          <Route path='/create-post' element={<CreatePost />} />
-        </Route>
-        <Route element={<AdminPrivateRoute />}>
-          <Route path='/update-post/:postId' element={<UpdatePost />} />
-        </Route>
-        <Route path='/about' element={<About />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/search' element={<Search />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/project' element={<Project />} />
-        <Route path='/post/:slug' element={<PostPage />} />
-      </Routes>
-    <Footer />
+      <ScrollToTop />
+      
+        <Header />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route element={<PrivateRoute />}>
+            <Route path='/dashboard' element={<Dashboard />} />
+          </Route>
+          <Route element={<AdminPrivateRoute />}>
+            <Route path='/create-post' element={<CreatePost />} />
+          </Route>
+          <Route element={<AdminPrivateRoute />}>
+            <Route path='/update-post/:postId' element={<UpdatePost />} />
+          </Route>
+          <Route path='/about' element={<About />} />
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/search' element={<Search />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/project' element={<Project />} />
+          <Route path='/post/:slug' element={<PostPage />} />
+        </Routes>
+      <Footer />
+      
     </BrowserRouter>
   )
 }

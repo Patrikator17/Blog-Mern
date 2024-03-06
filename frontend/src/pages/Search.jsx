@@ -7,7 +7,8 @@ const Search = () => {
   const [sidebarData, setSidebarData] = useState({
     searchTerm: '',
     sort: 'desc',
-    category: 'uncategorized'
+    category: 'all', // Set the default category to 'all'
+    sortField: 'updatedAt',
   });
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -21,26 +22,26 @@ const Search = () => {
     const sortFromUrl = urlParams.get('sort');
     const categoryFromUrl = urlParams.get('category');
 
+    // Check if any search parameters are present
     if (searchTermFromUrl || sortFromUrl || categoryFromUrl) {
       setSidebarData({
         ...sidebarData,
-        searchTerm: searchTermFromUrl,
-        sort: sortFromUrl,
-        category: categoryFromUrl,
+        searchTerm: searchTermFromUrl || '',
+        sort: sortFromUrl || 'desc',
+        category: categoryFromUrl || 'all',
       });
     }
 
     const fetchPosts = async () => {
-      setLoading(true);
-      const searchQuery = urlParams.toString();
-      const res = await fetch(`/api/post/get-post?${searchQuery}`);
-      
-      if (!res.ok) {
-        setLoading(false);
-        return;
-      }
+      try {
+        setLoading(true);
+        const searchQuery = urlParams.toString();
+        const res = await fetch(`/api/post/get-post?${searchQuery}`);
 
-      if (res.ok) {
+        if (!res.ok) {
+          throw new Error(`Failed to fetch posts. Status: ${res.status}`);
+        }
+
         const data = await res.json();
         setPosts(data.posts);
         setLoading(false);
@@ -50,6 +51,11 @@ const Search = () => {
         } else {
           setShowMore(false);
         }
+      } catch (error) {
+        console.error('Error fetching posts:', error.message);
+        setLoading(false);
+        // Handle error gracefully, display a user-friendly message
+        // (e.g., "An error occurred while fetching posts. Please try again later.")
       }
     };
 
@@ -62,10 +68,11 @@ const Search = () => {
     }
     if (e.target.id === 'sort') {
       const order = e.target.value || 'desc';
-      setSidebarData({ ...sidebarData, sort: order });
+      const field = (order === 'asc') ? 'createdAt' : 'updatedAt';
+      setSidebarData({ ...sidebarData, sort: order, sortField: field });
     }
     if (e.target.id === 'category') {
-      const category = e.target.value || 'uncategorized';
+      const category = e.target.value || 'all';
       setSidebarData({ ...sidebarData, category });
     }
   };
@@ -74,11 +81,23 @@ const Search = () => {
     e.preventDefault();
     const urlParams = new URLSearchParams(location.search);
     urlParams.set('searchTerm', sidebarData.searchTerm);
-    urlParams.set('sort', sidebarData.sort);
+    urlParams.set('sort', sidebarData.sort); // Keep the user-selected sort value
+  
+    if (sidebarData.sort === 'desc') {
+      // For latest posts, set sortField to 'updatedAt' and sort to 'desc'
+      urlParams.set('sortField', 'updatedAt');
+    } else {
+      // For oldest posts, set sortField to 'createdAt' and sort to 'asc'
+      urlParams.set('sortField', 'createdAt');
+    }
+  
     urlParams.set('category', sidebarData.category);
+  
     const searchQuery = urlParams.toString();
+    console.log('Search Query:', searchQuery);
     navigate(`/search?${searchQuery}`);
   };
+  
 
   const handleShowMore = async () => {
     const numberOfPosts = posts.length;
@@ -89,7 +108,7 @@ const Search = () => {
     const res = await fetch(`/api/post/get-post?${searchQuery}`);
 
     if (!res.ok) {
-      return;
+      return; // Handle potential errors here
     }
 
     if (res.ok) {
@@ -134,8 +153,9 @@ const Search = () => {
               value={sidebarData.category}
               id='category'
             >
+              <option value='all'>All</option>
               <option value='uncategorized'>Uncategorized</option>
-              <option value='reactjs'>React.js</option>
+              <option value='React'>React.js</option>
               <option value='Python'>Python</option>
               <option value='Javascript'>Javascript</option>
             </Select>

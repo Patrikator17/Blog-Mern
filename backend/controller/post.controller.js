@@ -33,23 +33,29 @@ export const getPost = async(req, res, next) => {
     try{
         const startIndex = parseInt(req.query.startIndex) || 0
         const limit = parseInt(req.query.limit) || 9
-        const sortDirection = req.query.order === 'asc' ? 1 : -1
+
+        // Dynamically determine sortField and sortDirection based on user's filter
+        const sortField = req.query.sortField || 'updatedAt';
+        const sortDirection = req.query.sort === 'asc' ? 1 : -1
+
+        console.log('Sort Field:', sortField); // Log the sortField
+        console.log('Sort Direction:', sortDirection); // Log the sortDirection
 
         const posts = await Post.find({
-            ...(req.query.userId && {userId: req.query.userId}),
-            ...(req.query.category && {category: req.query.category}),
-            ...(req.query.slug && {slug: req.query.slug}),
-            ...(req.query.postId && {_id: req.query.postId}),
+            ...(req.query.userId && { userId: req.query.userId }),
+            ...(req.query.category && req.query.category !== 'all' && { category: req.query.category }),
+            ...(req.query.slug && { slug: req.query.slug }),
+            ...(req.query.postId && { _id: req.query.postId }),
             ...(req.query.searchTerm && {
                 $or: [
-                    {title: {$regex: req.query.searchTerm, $options: 'i'}},
-                    {content: {$regex: req.query.searchTerm, $options: 'i'}},
+                    { title: { $regex: req.query.searchTerm, $options: 'i' } },
+                    { content: { $regex: req.query.searchTerm, $options: 'i' } },
                 ],
-            })
+            }),
         })
-        .sort({updatedAt: sortDirection})
-        .skip(startIndex)   
-        .limit(limit)
+        .sort({ [sortField]: sortDirection })
+        .skip(startIndex)
+        .limit(limit);
             
         const totalPost = await Post.countDocuments();
 
@@ -75,6 +81,8 @@ export const getPost = async(req, res, next) => {
         next(error)
     }
 }
+
+
 
 
 export const deletePost = async(req, res, next) => {
