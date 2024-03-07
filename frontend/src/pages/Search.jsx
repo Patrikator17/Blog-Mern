@@ -177,7 +177,10 @@ const Search = () => {
           {!loading &&
             posts &&
             posts.map((post) => <PostCard key={post._id} post={post} />)}
-          {showMore && (
+          
+        </div>
+
+        {showMore && (
             <div className='flex justify-center w-full'>
               <button
                 onClick={handleShowMore}
@@ -187,7 +190,6 @@ const Search = () => {
               </button>
             </div>
           )}
-        </div>
       </div>
     </div>
   );
